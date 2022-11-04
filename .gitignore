@@ -1,3 +1,13 @@
+migrations
+misc/**/migrations/
+databases/**/migrations/
+dev.db
+
 node_modules/
+jspm_packages/
 .env
-.expo/
+.expo
+.next
+*.log
+npm-debug.log*
+
