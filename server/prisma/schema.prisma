@@ -19,4 +19,60 @@ model Pool {
   title     String
   code      String   @unique
   createdAt DateTime @default(now())
+  // FKS
+  ownerId   String?
+
+  // Relacionamentos:
+  participants Participant[]
+  owner        User?         @relation(fields: [ownerId], references: [id])
+}
+
+model Participant {
+  id     String @id @default(cuid())
+  // FKS
+  userId String
+  poolId String
+
+  // Relacionamentos:
+  guesses Guess[]
+  user    User    @relation(fields: [userId], references: [id])
+  pool    Pool    @relation(fields: [poolId], references: [id])
+
+  @@unique([userId, poolId]) // Garante que exista um poolId para cada userId
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  // Relacionamentos:
+  participatingAt Participant[]
+  ownedPools      Pool[]
+}
+
+model Game {
+  id                    String   @id @default(cuid())
+  date                  DateTime
+  firstTeamCountryCode  String
+  secondTeamCountryCode String
+
+  // Relacionamentos:
+  guesses Guess[]
+}
+
+model Guess {
+  id               String   @id @default(cuid())
+  firstTeamPoints  Int
+  secondTeamPoints Int
+  createdAt        DateTime @default(now())
+  // FKS
+  gameId           String
+  participantId    String
+
+  // Relacionamentos:
+  game        Game        @relation(fields: [gameId], references: [id])
+  participant Participant @relation(fields: [participantId], references: [id])
 }
