@@ -1,4 +1,4 @@
-migrations
+migrations/
 misc/**/migrations/
 databases/**/migrations/
 dev.db
